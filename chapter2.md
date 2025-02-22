@@ -59,9 +59,9 @@ Gear.new(52, 11).ratio # This used to work, but now it doesn't
 ### Why it matters
 
 - Easy to change applications consist reusable classes (pluggable units of
-well-defined behaviour with few entablgements)
+well-defined behaviour with few entanglements)
 
-- A class that has more than one resonsibility is difficult to reuse
+- A class that has more than one responsibility is difficult to reuse
 
 - One bad option is duplicating the code - This leads to additional maintenance
 and increased bugs
@@ -69,7 +69,7 @@ and increased bugs
 - Another bad option is to inherit from the class - This leads to a class that is
 difficult to understand and maintain
 
-- If the class youre working on is difficult to understand, it's likely that the
+- If the class you're working on is difficult to understand, it's likely that the
 class has more than one responsibility
 
 ### Determining if a class has a single responsibility
@@ -90,10 +90,10 @@ class has more than one responsibility
 - This concept is called *cohesion*. Everything in a class is related to its
 central purpose
 
-- Related to Responbility-Driven Design (RDD). A class has responbilities that
-fufill its purpose
+- Related to Responsibility-Driven Design (RDD). A class has responsibilities that
+fulfill its purpose
 
-### When to make design decesions
+### When to make design decisions
 
 - Do not feel compelled to make design decisions prematurely
 
@@ -210,3 +210,20 @@ they obscure
     end
   end
 ```
+
+- The diameters method above now has no knowledge of the internal structure of
+the array
+
+- All diameters knows is that the message wheels returns and enumerable that
+responds to rim and tire
+
+- All knowledge of the internal structure of the data has been encapsulated in
+wheelify method
+
+- This converts the 2d array into and array of Structs
+
+- Struct - A convenient way to bundle a number of attributes together using
+accessor methods
+
+- This style of code allows  you to protect against changes in externally
+owned data structures and to make the code readable and intention revealing

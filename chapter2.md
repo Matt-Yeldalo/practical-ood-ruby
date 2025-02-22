@@ -6,23 +6,23 @@
 
 - Easy changes can be defined as:
 
-- - Changes have no unexpected side effects
-- - Small changes in requirements require correspondingly small changes in code
-- - Existing code is easy to reuse
+  - Changes have no unexpected side effects
+  - Small changes in requirements require correspondingly small changes in code
+  - Existing code is easy to reuse
 
 - These qualities can also be defined as TRUE
 
 - Transparent
-- - The consequences of change should be obvious in the code that is changing
+  - The consequences of change should be obvious in the code that is changing
 
 - Reasonable
-- - The cost of any change should be proportional to the benefits the change achieves
+  - The cost of any change should be proportional to the benefits the change achieves
 
 - Usable
-- - Existing code can be easily used in new and unexpected contexts
+  - Existing code can be easily used in new and unexpected contexts
 
 - Exemplary
-- - The code itself should encourage those who change it to perpetuate these qualities
+  - The code itself should encourage those who change it to perpetuate these qualities
 
 ## Single Responsibility Classes
 
@@ -76,21 +76,21 @@ class has more than one responsibility
 
 - Pretend the class is sentient and interrogate it, rephrase methods as a question
 
-- - ✔️ "Mr. Gear, what is your ratio?"
+  - ✔️ "Mr. Gear, what is your ratio?"
 
-- - ❌ "Mr. Gear, what is your tire (size)?"
+  - ❌ "Mr. Gear, what is your tire (size)?"
 
 - Attempt to describe the class in a single sentence
 
-- - If the explanation uses the word 'and', the class likely has more than one responsibility
+  - If the explanation uses the word 'and', the class likely has more than one responsibility
 
-- - If it uses the word 'or', the class likely has more than one responsibility
-(may be unrelated)
+  - If it uses the word 'or', the class likely has more than one responsibility
+    (may be unrelated)
 
-- This concept is called *cohesion*. Everything in a class is related to its 
+- This concept is called *cohesion*. Everything in a class is related to its
 central purpose
 
-- Related to Responbility-Driven Design (RDD). A class has responbilities that 
+- Related to Responbility-Driven Design (RDD). A class has responbilities that
 fufill its purpose
 
 ### When to make design decesions

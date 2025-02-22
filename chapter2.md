@@ -100,3 +100,112 @@ fufill its purpose
 - Ask yourself: "What is the future cost of doing nothing today?"
 
 ## Writing Code that Embraces Change
+
+- You can arrange code so that Gear will be easy to change
+
+## Depend on behaviour, not data
+
+- When creating a SR class, every bit of behaviour lives in one and only one place
+
+- Related to DRY (Don't Repeat Yourself)
+
+- Hide Instance Variables
+  - Always wrap instance variables in accessor methods instead of direct reference.
+  - do **NOT** do this:
+
+  - ```ruby
+     class Gear
+       def initialize(chainring, cog)
+        @chainring = chainring
+        @cog = cog
+       end
+
+       def ration
+         @chainring / @cog.to_f # <-- bad
+       end
+     end
+    ```
+
+  - Hide the variables by utilising attr_reader
+  - do **THIS**:
+
+  - ```ruby
+      class Gear
+        attr_reader :chainring, :cog
+        def initialize(chainring, cog)
+          @chainring = chainring
+          @cog = cog
+        end
+
+        def ratio
+          chainring / cog.to_f
+        end
+      end
+    ```
+
+- This can allow for changing the implementation of cog
+
+  - ```ruby
+      def cog
+        @cog * unanticipated_adjustment_factor
+      end
+    ```
+
+- Hide data from yourself to protect the code from unpexpected changes
+
+### Hide Data
+
+- Avoid depending on a complicated data structure
+
+```ruby
+class ObscuringReferences
+  attr_reader :data
+  def initialize(data)
+    @data = data
+  end
+
+  def diameters
+    # 0 is the rim, 1 is the tire
+    data.collect { |cell|
+      cell[0] + (cell[1] * 2)
+    }
+  end
+end
+```
+
+- This code is difficult to understand because it depends on the structure of
+the data
+- When you have data in a an array, it is not long until you have references to said array
+
+- References are leaky, they esacpe the class and spread throughout the codebase, not DRY
+
+- Direct references into complicated strucures are confusing and error-prone, they obscure
+
+- In Ruby it's easy to sepearate the structure from the data, using a method wrapper
+
+- This can be done by using the Struct class to wrap a structure. New implementation:
+
+```ruby
+  class RevealingReferences
+    attr_reader :wheels
+    def initialize(data)
+      @wheels = wheelify(data)
+    end
+
+    def diameters
+      wheels.collect { |wheel|
+        wheel.rim + (wheel.tire * 2)
+      }
+    end
+
+    # now everyone can send rim/tire to wheel
+    Wheel = Struct.new(:rim, :tire)
+    def wheelify(data)
+      data.collect { |cell|
+        Wheel.new(cell[0], cell[1])
+      }
+    end
+  end
+```
+
+

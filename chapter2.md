@@ -175,11 +175,14 @@ end
 
 - This code is difficult to understand because it depends on the structure of
 the data
-- When you have data in a an array, it is not long until you have references to said array
+- When you have data in a an array, it is not long until you have references to
+said array
 
-- References are leaky, they esacpe the class and spread throughout the codebase, not DRY
+- References are leaky, they esacpe the class and spread throughout the codebase,
+not DRY
 
-- Direct references into complicated strucures are confusing and error-prone, they obscure
+- Direct references into complicated strucures are confusing and error-prone,
+they obscure
 
 - In Ruby it's easy to sepearate the structure from the data, using a method wrapper
 
@@ -207,5 +210,3 @@ the data
     end
   end
 ```
-
-

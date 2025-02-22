@@ -1,4 +1,4 @@
-# Practical Object Oriented Design in Ruby
+# Practical Object Oriented Design in Ruby - Chapter One
 
 ## SOLID Principles
 

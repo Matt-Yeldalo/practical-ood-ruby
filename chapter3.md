@@ -129,3 +129,7 @@ class Gear
   end
 end
 ```
+
+- Gear now uses the **@wheel** variable to hold, and the **wheel** method to access
+- Moving *Wheel* creation outside of *Gear* decouples the two classes
+- *Gear* can now collaborate with any object that implements diameter

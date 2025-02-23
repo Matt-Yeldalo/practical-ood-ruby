@@ -227,3 +227,114 @@ accessor methods
 
 - This style of code allows  you to protect against changes in externally
 owned data structures and to make the code readable and intention revealing
+
+- Array of Wheels might be easier, it's not always an option.
+
+- If you can control the input, pass in a useful object
+
+- If you are compelled to take a messy structure, hide the mess even from yourself
+
+### Enforce Single Responsibility Everywhere
+
+- Creating classes with a single responsibility has important implications for design
+
+- The idea of a single responsibility can be usefully employed in many other parts
+of your code. For example the diameters method:
+
+  - ```ruby
+      def diameters
+        wheels.collect { |wheel|
+          wheel.rim + (wheel.tire * 2)
+        }
+      end
+    ```
+
+- This method has two responsibilities:
+  - Iterating over the wheels
+  - Calculating the diameter of each wheel
+- We can refactor this method to have a single responsibility:
+
+  - ```ruby
+      def diameters
+        wheels.collect { |wheel|
+          diameter(wheel)
+        }
+      end
+
+      def diameter(wheel)
+        wheel.rim + (wheel.tire * 2)
+      end
+    ```
+
+- This introduces an additional message send but at this point, design takes priority
+over performance. Ensuring it is easy to change.
+
+- Not over design, it merely reorganizes the code that is currently in use.
+Separating iteration from the inner action is a common case of multiply responsibility
+
+- Once you isolate responsibility, design becomes more obvious.
+**Good practices reveal design**
+
+- Single Responsibility Methods:
+  - Expose previously hidden qualities
+  - Avoid need for comments
+  - Encourage reuse
+  - Are easy to move to another class
+
+### Final Gear Class
+
+```ruby
+class Gear
+  attr_reader :chainring, :cog, :wheel
+  def initialize(chainring, cog, wheel)
+    @chainring = chainring
+    @cog = cog
+    @wheel = wheel
+  end
+
+  def ratio
+    chainring / cog.to_f
+  end
+
+  def gear_inches
+    ratio * wheel.diameter
+  end
+
+  Wheel = Struct.new(:rim, :tire) do
+    def diameter
+      rim + (tire * 2)
+    end
+  end
+end
+```
+
+- When should *Wheel* be extracted into its own class?
+  - When the requirements change and there is a explicit need for *Wheel*
+  - When *Wheel* can be reused in another context
+
+```ruby
+class Wheel
+  attr_reader :rim, :tire
+  def initialize(rim, tire)
+    @rim = rim
+    @tire = tire
+  end
+
+  def diameter
+    rim + (tire * 2)
+  end
+
+  def circumference
+    diameter * Math::PI
+  end
+end
+```
+
+## Summary
+
+- The path to changeable and maintainable OOP software begins with classes that
+have a single responsibility.
+
+- If class does one thing, isolate that thing from the rest of your application
+
+- Isolation allows change without consequence and reuse without duplication

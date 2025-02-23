@@ -133,3 +133,16 @@ end
 - Gear now uses the **@wheel** variable to hold, and the **wheel** method to access
 - Moving *Wheel* creation outside of *Gear* decouples the two classes
 - *Gear* can now collaborate with any object that implements diameter
+
+This technique is known as *dependency injection*
+
+- *Gear* previously had explicit dependencies on the *Wheel* class and other factors
+such as type and order of initializer
+
+- Using DI, *Gear* has reduced it to a single dependency; The diameter method
+
+- To implement this you need the ability to distinguish between the messages
+and the classes that respond to them
+
+- Just because *Gear* needs to send diameter somewhere, does note mean that
+*Gear* should know about *Wheel*

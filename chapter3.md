@@ -146,3 +146,30 @@ and the classes that respond to them
 
 - Just because *Gear* needs to send diameter somewhere, does note mean that
 *Gear* should know about *Wheel*
+
+## Isolating Dependencies
+
+- If you can't change the code to inject the *Wheel*, you should isolate the creation
+
+```ruby
+class Gear
+  attr_reader :chainring, :cog, :rim, :tire
+  def initialize(chainring, cog, rim, tire)
+    @chainring = chainring
+    @cog = cog
+    @rim = rim
+    @tire = tire
+  end
+
+  def gear_inches
+    ratio * wheel.diameter
+  end
+
+  def wheel
+    @wheel ||= Wheel.new(rim, tire)
+  end
+end
+```
+
+- This is also a simple example of the **Lazy Initialization** pattern
+- In both these examples, *Gear* still knows too much, taking init args

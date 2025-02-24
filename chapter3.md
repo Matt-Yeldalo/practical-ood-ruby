@@ -173,3 +173,10 @@ end
 
 - This is also a simple example of the **Lazy Initialization** pattern
 - In both these examples, *Gear* still knows too much, taking init args
+
+### Isolate Vulnerable External Messages
+
+After spending some time with external class names, it's time to
+focus on external *messages*
+
+- This refers to messages that are sent to someone other than *self*

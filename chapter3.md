@@ -180,3 +180,85 @@ After spending some time with external class names, it's time to
 focus on external *messages*
 
 - This refers to messages that are sent to someone other than *self*
+
+### Using Keyword Arguments
+
+```ruby
+class Gear
+  attr_reader :chainring, :cog, :wheel
+  def initialize(chainring:, cog: wheel:)
+    @chainring = chainring
+    @cog = cog
+    @wheel = wheel
+  end
+end
+Gear.new(chainring: 'chain', cog: 'cog', wheel: Wheel.new)
+```
+
+Using keyword arguments requires the sender and the receiver of a message to
+state the keyword names. This results in explicit documentation at both ends of the
+message. Future maintainers will be grateful for this information.
+
+- Keyword arguemtns are so flexible that the general rule is that you should
+*prefer* them.
+
+### Explicitly Define Defaults
+
+```ruby
+class Gear
+  attr_reader :chainring, :cog, :wheel
+  def initialize(chainring: default_chainring, cog: 18, wheel:)
+    @chainring = chainring
+    @cog = cog
+    @wheel = wheel
+  end
+  def default_chainring
+    (100 * 20) / 50 # random code
+  end
+end
+
+puts Gear.new(wheel: Wheel.new(26, 1.5)).chainring
+```
+
+The key to understanding the above code is to recognize that initialize
+executes in the new instance of *Gear*. It is therefore appropriate for
+initialize to send messages to self.
+
+- Don't hesitate to send a message to self if you require more logic
+  when initializing defaults
+
+### Isolate Multiparameter Initialization
+
+So far, all the examples of removing argument-order dependencies have
+been for situations where you control the signature of the method that
+needs to change. You will not always have this luxury
+
+In this example:
+
+- `SomeFramework::Gear` is not owned by your application.
+- It is part of an external framework
+- *GearWrapper* was created to avoid having multiple dependencies
+- *GearWrapper* isolates all knowledge of the external interface
+  in one place and equally important, it provides an improved
+  interface for your application.
+
+```ruby
+module SomeFramework
+  class Gear
+    attr_reader :chainring, :cog, :wheel
+    def initialize(chainring, cog, wheel)
+      @chainring = chainring
+      @cog = cog
+      @wheel = wheel
+    end
+  end
+end
+
+module GearWrapper
+  def self.gear(chainring:, cog:, wheel:)
+    SomeFramework::Gear.new(chainring, cog, wheel)
+  end
+end
+
+puts GearWrapper.gear(chainring: 52, cog: 11, wheel: Wheel.new(26, 1.5)).gear_inches
+```

@@ -262,3 +262,31 @@ end
 
 puts GearWrapper.gear(chainring: 52, cog: 11, wheel: Wheel.new(26, 1.5)).gear_inches
 ```
+
+- If you are unable to change the method, wrap it to protect it
+
+## Managing Dependency Direction
+
+- Dependencies have a direction, how do you decide on the direction?
+
+### Reversing Dependencies
+
+Every example used thus far show *Gear* depending on *Wheel* or diameter,
+but the code could have been written with the direction of the dependencies reversed
+
+Wheel could instead depend on *Gear* or ratio. The following example illustrates one
+possible form of the reversal.
+
+Here *Wheel* has been changed to depend on Gear and gear_inches. Gear is still responsible
+for the actual calculation, but it expects a diameter argument to be passed
+
+## Summary
+
+Dependency management is core to creating future-proof applications. Injecting
+dependencies creates loosely coupled object that can be reused in novel ways.
+Isolating dependencies allows objects to quickly adapt to unexpected changes.
+Depending on abstractions decreases the likelihood of facing these changes.
+
+The key to managing dependencies is to control their direction.
+
+Ensure the if a depends on b, b changes less often than a

@@ -55,3 +55,101 @@ Domain Objects:
   applications than does the class-based perspective. Changing the fundamental design 
   question from “I know I need this class, what should it do?” to “I need to send this 
 message, who should respond to it?” is the first step in that direction.
+
+## Create explicit Interfaces
+
+Every time you create a class, declare its interfaces. Methods in the public interface should:
+- Be explicitly identified as such.
+- Be more about what than *how*
+- Have names that, insofar as you can anticipate, will not change.
+- Prefer keyword arguments.
+
+## The Law of Demeter
+
+Demeter restricts the set of object to which a method may *send* messages. This is often paraphrased as only talking to immediate neighnors or using one dot.
+Violation Example:
+`customer.bicycle.wheel.tire`
+
+Non Violation Example:
+`hash.keys.sort.join`
+
+The hash example may seem like a violation when glancing at the number of dots; However, all the intermediate object have the same *type*
+
+### How to avoid
+
+- One common way to avoid violations is to *delegate* a message using a wrapper method which encapsulates knowledge that would otherwise be emobidied in the message chain.
+- Ruby provides support for this viw delegate.rb and forwardable.rb.
+
+```ruby
+require 'delegate'
+
+class User
+  attr_reader :name, :email
+
+  def initialize(name, email)
+    @name = name
+    @email = email
+  end
+
+  def greet
+    "Hello, I'm #{name}"
+  end
+end
+
+class UserPresenter < SimpleDelegator
+  def formatted_email
+    "<#{email}>"
+  end
+end
+
+user = User.new("Alice", "alice@example.com")
+presenter = UserPresenter.new(user)
+
+puts presenter.greet          # => "Hello, I'm Alice"
+puts presenter.formatted_email # => "<alice@example.com>"
+```
+
+```ruby
+require 'forwardable'
+
+class User
+  attr_reader :name, :email
+
+  def initialize(name, email)
+    @name = name
+    @email = email
+  end
+
+  def greet
+    "Hi, I'm #{name}"
+  end
+end
+
+class UserWrapper
+  extend Forwardable
+
+  def_delegators :@user, :name, :email, :greet
+
+  def initialize(user)
+    @user = user
+  end
+
+  def formatted_email
+    "<#{email}>"
+  end
+end
+
+user = User.new("Bob", "bob@example.com")
+wrapper = UserWrapper.new(user)
+
+puts wrapper.greet            # => "Hi, I'm Bob"
+puts wrapper.formatted_email # => "<bob@example.com>"
+```
+
+## Summary
+
+- Object-oriented applications are defined by the messages that pass between objects.
+- Message passing takes place along "public" interfaces
+- Focusing on messages reveals objects that might otherwise be overlooked.
+- Messages asking for what the sender wants instead of telling the receiver how to behave,
+  objects will naturually evolve public interfaces that are flexible and resuable.
